@@ -4,17 +4,17 @@ description: 从 design.md 生成 spec.md 和 task.md
 version: 1.0.0
 author: system
 triggers:
-  - "/spec"
-  - "generate spec from design"
-  - "create spec and tasks"
+   - "/spec"
+   - "generate spec from design"
+   - "create spec and tasks"
 tools:
-  - Read
-  - Write
-  - Glob
+   - Read
+   - Write
+   - Glob
 arguments:
-  - name: change-id
-    description: "变更 ID 目录名称（可选，默认从上下文推断）"
-    required: false
+   - name: change-id
+     description: "变更 ID 目录名称（可选，默认从上下文推断）"
+     required: false
 ---
 
 # SelfSpec 生成器命令
@@ -106,29 +106,44 @@ arguments:
 
 [1-2 句话总结此计划实施的内容]
 
+## Reference
+
+- Design: [design.md](./design.md)
+- Specification: [spec.md](./spec.md)
+
 ## 任务
 
 - [ ] 1. [高级阶段或组件]
-  - [简要说明或上下文]
-  - _Requirements: [来自 spec.md 的需求名称]_
+   - [简要说明或上下文]
+   - _Requirements: [来自 spec.md 的需求名称]_
 
-- [ ] 2. [下一阶段]
-  ...
+- [ ] 2. 验证：[对应需求的验证]
+   - [具体验证步骤]
+   - _Validates: [对应的需求名称]_
+
+- [ ] 3. [下一阶段]
+         ...
 ```
 
 **关键规则：**
 1. **复选框格式**：对所有任务使用 `- [ ]`（未选中）
 2. **需求可追溯性**：使用 `_Requirements: ..._` 将任务链接到 spec.md 需求
-3. **粒度**：任务应可在 1-2 小时内完成
-4. **顺序**：按依赖关系排序任务（基础 → 功能 → 测试 → 文档）
-5. **清晰性**：每个任务应具体且可操作
+3. **验证可追溯性**：使用 `_Validates: ..._` 将验证任务链接到对应需求
+4. **粒度**：任务应可在 1-2 小时内完成
+5. **顺序**：按依赖关系排序任务（基础 → 功能 → 测试 → 文档）
+6. **清晰性**：每个任务应具体且可操作
+7. **即时验证**：每个需求实施后立即添加对应的验证任务，而非在最后统一验证
+8. **Reference**：必须包含指向 design.md 和 spec.md 的链接
 
 **任务类别**（典型顺序）：
 1. 移除旧的/冲突的代码（如果存在 REMOVED 需求）
-2. 实施核心变更（ADDED/MODIFIED 需求）
-3. 更新测试（单元 → 集成 → e2e）
-4. 更新文档
-5. 验证和确认
+2. 实施需求 A（ADDED/MODIFIED 需求）
+3. 验证需求 A（单元测试、集成测试、功能验证）
+4. 实施需求 B
+5. 验证需求 B
+6. ...（重复实施→验证模式）
+7. 更新文档
+8. 最终集成验证
 
 ## 分析策略
 
@@ -156,21 +171,28 @@ arguments:
 4. **创建任务分解**：
    - 按组件或子系统分组
    - 尊重依赖顺序
-   - 包括测试覆盖
+   - 每个需求实施后立即添加验证任务（实施→验证→实施→验证模式）
+   - 验证任务包括单元测试、集成测试和功能验证
    - 考虑迁移/清理
-   - 添加验证步骤
+   - 包含 Reference 栏关联 design.md 和 spec.md
 
 ## 质量检查清单
 
 输出前验证：
 
+**spec.md 检查：**
 - [ ] 每个需求至少有 1 个场景
 - [ ] 所有场景使用 `#### Scenario:` 格式（4 个井号）
 - [ ] 需求使用"应当/必须"（SHALL/MUST）（而非"应该/可以"）
 - [ ] MODIFIED 需求包含完整的原始文本
 - [ ] REMOVED 需求解释了原因和迁移方案
+
+**task.md 检查：**
+- [ ] 包含 Reference 栏，关联到 design.md 和 spec.md
+- [ ] 每个实施任务后立即有对应的验证任务
+- [ ] 验证任务使用 `_Validates: ..._` 标注
 - [ ] 任务具体且可操作
-- [ ] 任务引用了需求
+- [ ] 任务引用了需求（使用 `_Requirements: ..._`）
 - [ ] 任务按依赖关系排序
 - [ ] 无 TODO 或占位符文本
 

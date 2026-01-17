@@ -1,12 +1,12 @@
 ---
-name: spec
-description: 从 design.md 生成 spec.md 和 task.md
+name: spec_base
+description: 从 design.md 生成 spec_base.md 和 task.md
 version: 1.0.0
 author: system
 triggers:
-   - "/spec"
-   - "generate spec from design"
-   - "create spec and tasks"
+   - "/spec_base"
+   - "generate spec_base from design"
+   - "create spec_base and tasks"
 tools:
    - Read
    - Write
@@ -94,11 +94,7 @@ arguments:
 - **THEN**：预期结果、断言、结果
 - **AND**：额外的条件或断言
 
-### 2. 生成 task.md
-
-创建可操作的实施检查清单：
-
-**结构：**
+### 2. 生成 task.m
 ```markdown
 # 实施计划：[功能名称]
 
@@ -108,7 +104,7 @@ arguments:
 
 ## Reference
 
-- Design: [design.md](./design.md)
+- Design: [design.md](../design.md)
 - Specification: [spec.md](./spec.md)
 
 ## 任务
@@ -122,6 +118,8 @@ arguments:
    - _Validates: [对应的需求名称]_
 
 - [ ] 3. [下一阶段]
+         ...
+```. [下一阶段]
          ...
 ```
 
